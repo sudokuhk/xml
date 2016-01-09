@@ -43,7 +43,19 @@ namespace xml
                 levelMap.m_path, node_name);                                        \
             ret = xml::read_xml(value, nameMap, node_name, def_value, option);      \
             exists = (ret == 0);                                                    \
-            ret = ret == 0 ? 0 : -1;                                                \
+            if (ret < 0) return ret;                                                \
+        }                                                                           \
+        
+    
+    #define READ_OBJ(obj, node_name, option)                                        \
+        {                                                                           \
+            xml::CNameMap::iterator itName = nameMap.find(node_name);               \
+            if (itName == nameMap.end()) {                                          \
+                ret = -1;                                                           \
+            } else {                                                                \
+                ret = obj.read_xml(itName->second, option);                         \
+            }                                                                       \
+            if (ret < 0) return ret;                                                \
         }                                                                           \
                 
     #define READ_XML_END                                                            \

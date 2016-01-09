@@ -77,11 +77,11 @@ int CBaseRead::init(void)
 int get_content(std::string& buf, const char **sz_path, CNameMap & nameMap, 
             const char * nodeName)
 {
-    log_error(LOG_DEBUG, "%s:%d, key:%s, mapsize:%d", __FUNCTION__, __LINE__, nodeName, nameMap.size());
+    log_error(LOG_DEBUG, "%s:%d, key:%s/%s, mapsize:%d", __FUNCTION__, __LINE__, nameMap.m_path, nodeName, nameMap.size());
     int ret = 0;
     *sz_path = nameMap.m_path;
     
-    #if LOG_LEVEL == LOG_DEBUG
+    #if 0//LOG_LEVEL == LOG_DEBUG
     for (CNameMap::const_iterator it = nameMap.begin(); it != nameMap.end(); ++it)
         log_error(LOG_DEBUG, "VISIT:Key:%s", it->first.c_str());
     #endif
@@ -108,7 +108,7 @@ int get_content(std::string& buf, const char **sz_path, CNameMap & nameMap,
             *sz_path = (itLevel->second).m_path;
         }
     }
-    log_error(LOG_DEBUG, "GET:%s", buf.c_str());
+    log_error(LOG_DEBUG, "GET:%s, RET:%d", buf.c_str(), ret);
     return ret;
 }
 
@@ -123,11 +123,11 @@ void fill_nameMap(const CLevelMap & levelMap, CNameMap & nameMap)
                 
             TiXmlElement * pChildNode=(* itNode)->FirstChildElement();
             while (pChildNode != NULL) {
-                CNodeName node_name     = pChildNode->Value();
-				CLevelMap& rmapDomLevel = nameMap[node_name];
+                CNodeName nodeName      = pChildNode->Value();
+				CLevelMap& rmapDomLevel = nameMap[nodeName];
 				CNodeList& rlstNode     = rmapDomLevel[itLevel->first];
-				sprintf(rlstNode.m_path, "%s/%s", itLevel->second.m_path, node_name.c_str());
-				log_error(LOG_DEBUG, "VISIT:%s", rlstNode.m_path);
+				sprintf(rlstNode.m_path, "%s/%s", itLevel->second.m_path, nodeName.c_str());
+                log_error(LOG_DEBUG, "VISIT:%s", rlstNode.m_path);
 				if(rlstNode.empty()) {
 					strcpy(rmapDomLevel.m_path, rlstNode.m_path);
 				}
@@ -137,9 +137,9 @@ void fill_nameMap(const CLevelMap & levelMap, CNameMap & nameMap)
         }
     }
     
-    #if LOG_LEVEL == LOG_DEBUG
+    #if 0//LOG_LEVEL == LOG_DEBUG
     log_error(LOG_DEBUG, "NameMap size:%d", nameMap.size());
-    for (CNameMap::iterator it = nameMap.begin(); it != nameMap.end(); ++it)
+    for (CNameMap::const_iterator it = nameMap.begin(); it != nameMap.end(); ++it)
         log_error(LOG_DEBUG, "VISIT:Key:%s, size:%d", it->first.c_str(), it->second.size());
     #endif
 }

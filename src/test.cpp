@@ -14,13 +14,26 @@
 class A
 {
 public:
+    class C
+    {
+        READ_XML_BEGN
+        READ_VALUE(a, "a", 1, xml::eValueRequire);
+        READ_VALUE(d, "d", 12.3, xml::eValueRequire);
+        READ_XML_END
+        
+        int a;
+        double d;
+    };
+public:
     READ_XML_BEGN
     READ_VALUE(a, "a", 1, xml::eValueRequire);
     READ_VALUE(b, "b", "abc", xml::eValueRequire);
+    READ_OBJ(c, "c", xml::eValueRequire);
     READ_XML_END
     
     int a;
     char b[100];
+    C c;
 };
 
 int main()
@@ -29,6 +42,8 @@ int main()
     A a;
 
     r.read_xml(a, "a.xml");
-    printf("REAd:%d\n", a.a);
+    printf("READ:%d\n", a.a);
+    printf("READ:%s\n", a.b);
+    printf("READ:%d\n", a.c.a);
    return 0 ;
 }

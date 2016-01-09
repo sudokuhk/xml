@@ -58,6 +58,7 @@ namespace xml
     };
     
     typedef std::map<CNodeName, CLevelMap, CNodeNameCaseLess> NameMap;
+    //typedef std::map<CNodeName, CLevelMap> NameMap;    
         
     class CNameMap : public NameMap
     {

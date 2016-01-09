@@ -69,7 +69,8 @@ CLevelMap & CLevelMap::operator=(const CLevelMap & lhs)
 
 bool CNodeNameCaseLess::operator()(const CNodeName & lhs, const CNodeName & rhs)
 {
-    return strcasecmp(lhs.c_str(), rhs.c_str());
+    //printf("LEFT:%s, RIGHT:%s, %d\n", lhs.c_str(), rhs.c_str(), strcasecmp(lhs.c_str(), rhs.c_str()));
+    return strcasecmp(lhs.c_str(), rhs.c_str()) < 0;
 }
 
 CNameMap::CNameMap(void)
